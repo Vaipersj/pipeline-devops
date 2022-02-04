@@ -67,7 +67,7 @@ def stageRunSpringCurl(){
 def stageUploadNexus(){
     env.DESCRTIPTION_STAGE = "Paso 4: Subir Nexus"
     stage("${env.DESCRTIPTION_STAGE}"){
-        nexusPublisher nexusInstanceId: 'nexus3',
+        nexusPublisher nexusInstanceId: 'nexus',
         nexusRepositoryId: 'devops-usach-nexus',
         packages: [
             [$class: 'MavenPackage',
