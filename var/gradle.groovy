@@ -95,7 +95,7 @@ def stageDownloadNexus(){
    stage("${env.DESCRTIPTION_STAGE}"){
         env.STAGE = "download_nexus - ${DESCRTIPTION_STAGE}"
         sh "echo  ${env.STAGE}"
-        sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
+        sh ' curl -X GET -u admin:admin "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
     }
 }
 ​
