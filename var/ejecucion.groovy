@@ -13,7 +13,7 @@ def call(){
     agent any
     environment {
         NEXUS_USER         = credentials('NEXUS_USER')
-        NEXUS_PASSWORD     = credentials('NEXUS-PASS')
+        NEXUS_PASSWORD     = credentials('NEXUS_PASS')
     }
     parameters {
         choice(
