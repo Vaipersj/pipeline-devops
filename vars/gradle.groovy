@@ -1,35 +1,31 @@
-/*
-	forma de invocación de método call:
-	def ejecucion = load 'script.groovy'
-	ejecucion.call()
-*/
+import utilities.*
+
 def call(stages){
 ​
     def listStagesOrder = [
-        'build': 'stageCleanBuildTest',
-        'sonar': 'stageSonar',
-        'run_spring_curl': 'stageRunSpringCurl',
-        'upload_nexus': 'stageUploadNexus',
-        'download_nexus': 'stageDownloadNexus',
-        'run_jar': 'stageRunJar',
-        'curl_jar': 'stageCurlJar'
-    ]
-​
-    if (stages.isEmpty()) {
-        echo 'El pipeline se ejecutará completo'
-        allStages()
-    } else {
-        echo 'Stages a ejecutar :' + stages
-        listStagesOrder.each { stageName, stageFunction ->
-            stages.each{ stageToExecute ->//variable as param
-                if(stageName.equals(stageToExecute)){
+            'build': 'stageCleanBuildTest',
+            'sonar': 'stageSonar',
+            'curl_spring': 'stageRunSpringCurl',
+            'upload_nexus': 'stageUploadNexus',
+            'download_nexus': 'stageDownloadNexus',
+            'run_jar': 'stageRunJar',
+            'curl_jar': 'stageCurlJar'
+        ]
+
+        def arrayUtils = new array.arrayExtentions();
+        def stagesArray = []
+            stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
+
+        if (stagesArray.isEmpty()) {
+            echo 'El pipeline se ejecutará completo'
+            allStages()
+        } else {
+            echo 'Stages a ejecutar :' + stages
+            stagesArray.each{ stageFunction ->//variable as param
                 echo 'Ejecutando ' + stageFunction
                 "${stageFunction}"()
-                }
             }
         }
-​
-    }
 ​
 }
 ​
