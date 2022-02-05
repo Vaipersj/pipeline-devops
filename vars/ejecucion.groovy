@@ -20,7 +20,7 @@ def call(){
 
                         maven.call();
                       }else{
-
+                        sh 'echo ' params.stages
                         gradle.call(params.stages)
                       }
                   }
