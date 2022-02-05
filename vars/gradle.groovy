@@ -28,6 +28,16 @@ def call(stages){
         }
 ​
 }
+
+def allStages(){
+    stageCleanBuildTest()
+    stageSonar()
+    //stageRunSpringCurl()
+    //stageUploadNexus()
+    //stageDownloadNexus()
+    //stageRunJar()
+    //stageCurlJar()
+}
 ​
 def stageCleanBuildTest(){
     env.DESCRTIPTION_STAGE = 'Paso 1: Build - Test'
@@ -111,15 +121,5 @@ def stageCurlJar(){
         sh "echo  ${env.STAGE}"
         sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
-}
-​
-def allStages(){
-    stageCleanBuildTest()
-    stageSonar()
-    //stageRunSpringCurl()
-    //stageUploadNexus()
-    //stageDownloadNexus()
-    //stageRunJar()
-    //stageCurlJar()
 }
 return this;
