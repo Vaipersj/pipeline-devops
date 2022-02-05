@@ -1,3 +1,4 @@
+
 def call(){
   pipeline {
       agent any
@@ -6,9 +7,8 @@ def call(){
           NEXUS_PASSWORD     = credentials('NEXUS_PASS')
       }
       parameters {
-          choice choices: ['maven', 'gradle'], description: 'Seleccione una herramienta para preceder a compilar', name: 'compileTool'
-          text description: 'Enviar los stages separados por coma (;), vacío si necesita todos los stages', name: 'stages'
-
+            choice choices: ['maven', 'gradle'], description: 'Seleccione una herramienta para preceder a compilar', name: 'compileTool'
+            text description: 'Enviar los stages separados por ";"... Vacío si necesita todos los stages', name: 'stages'
       }
       stages {
           stage("Pipeline"){
@@ -17,10 +17,8 @@ def call(){
                       sh "env"
                       env.TAREA = ""
                       if(params.compileTool == 'maven'){
-
-                        maven.call();
+                        maven.call(params.stages);
                       }else{
-                        sh "echo 'stage a ejecutar'" params.stages
                         gradle.call(params.stages)
                       }
                   }
