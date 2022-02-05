@@ -23,7 +23,7 @@ def call(){
         )
     }
     stages {
-        stage("Pipeline"){
+        stage("pipeline"){
             steps {
                 //slackSend color: 'blue', iconEmoji: ':alert:', username: 'CBISSOTTO', message: "[Su Nombre] [${JOB_NAME}] [${BUILD_TAG}] Prueba iconEmoji", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
                 script{
