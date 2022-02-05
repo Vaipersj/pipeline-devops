@@ -1,58 +1,42 @@
-/*
-
-	forma de invocación de método call:
-
-	def ejecucion = load 'script.groovy'
-	ejecucion.call()
-
-*/
-
 def call(){
-  
   pipeline {
-    agent any
-    environment {
-        NEXUS_USER         = credentials('NEXUS_USER')
-        NEXUS_PASSWORD     = credentials('NEXUS_PASS')
-    }
-    parameters {
-        choice(
-            name:'compileTool',
-            choices: ['Maven', 'Gradle'],
-            description: 'Seleccione herramienta de compilacion'
-        )
-    }
-    stages {
-        stage("pipeline"){
-            steps {
-                //slackSend color: 'blue', iconEmoji: ':alert:', username: 'CBISSOTTO', message: "[Su Nombre] [${JOB_NAME}] [${BUILD_TAG}] Prueba iconEmoji", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
-                script{
-                    sh "env"
-                  switch(params.compileTool)
-                    {
-                        case 'Maven':
-                            //def ejecucion = load 'maven.groovy'
-                            maven.call();
-                        break;
-                        case 'Gradle':
-                            //def ejecucion = load 'gradle.groovy'
-                            gradle.call()
-                        break;
-                    }
-                }
-            }
-            post{
-                success{
-                    slackSend color: 'good', message: "[Su Nombre] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
-                }
-                failure{
-                    slackSend color: 'danger', message: "[Su Nombre] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.TAREA}]" , teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
-                }
-            }
+      agent any
+      environment {
+          NEXUS_USER         = credentials('NEXUS-USER')
+          NEXUS_PASSWORD     = credentials('NEXUS-PASS')
+      }
+      parameters {
+          choice choices: ['maven', 'gradle'], description: 'Seleccione una herramienta para preceder a compilar', name: 'compileTool'
+      }
+      stages {
+          stage("Pipeline"){
+              steps {
+                  script{
+                      sh "env"
+                      env.TAREA = ""
+                      if(params.compileTool == 'maven'){
+                          //compilar maven
+                          //def executor = load "maven.groovy"
+                          //executor.call()
+                        maven.call();
+                      }else{
+                          //compilar gradle
+                          //def executor = load "gradle.groovy"
+                          //executor.call()
+                        gradle.call()
+                      }
+                  }
+              }
+              post{
+          success{
+            slackSend color: 'good', message: "[Mentor] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'dipdevopsusac-tr94431'
+          }
+          failure{
+            slackSend color: 'danger', message: "[Mentor] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.TAREA}]", teamDomain: 'dipdevopsusac-tr94431'
+          }
         }
-    }
+          }
+      }
+  }
 }
-
-}
-
 return this;
