@@ -32,11 +32,11 @@ def call(stages){
 def allStages(){
     stageCleanBuildTest()
     stageSonar()
-    //stageRunSpringCurl()
-    //stageUploadNexus()
-    //stageDownloadNexus()
-    //stageRunJar()
-    //stageCurlJar()
+    stageRunSpringCurl()
+    stageUploadNexus()
+    stageDownloadNexus()
+    stageRunJar()
+    stageCurlJar()
 }
 
 def stageCleanBuildTest(){
