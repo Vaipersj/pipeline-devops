@@ -65,7 +65,7 @@ def stageRunSpringCurl(){
         env.STAGE = "run_spring_curl - ${DESCRTIPTION_STAGE}"
         sh "echo  ${env.STAGE}"
         sh "gradle bootRun&"
-        sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+        sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
 
@@ -118,7 +118,7 @@ def stageCurlJar(){
     stage("${env.DESCRTIPTION_STAGE}"){
         env.STAGE = "curl_jar - ${DESCRTIPTION_STAGE}"
         sh "echo  ${env.STAGE}"
-        sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+        sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
 return this;
