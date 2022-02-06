@@ -3,8 +3,12 @@ def call(){
   pipeline {
       agent any
       environment {
-          NEXUS_USER         = credentials('NEXUS_USER')
-          NEXUS_PASSWORD     = credentials('NEXUS_PASS')
+          NEXUS_USER         = credentials('NEXUS-USER')
+          NEXUS_PASSWORD     = credentials('NEXUS-PASS')
+      }
+      parameters {
+            choice choices: ['maven', 'gradle'], description: 'Seleccione una herramienta para preceder a compilar', name: 'compileTool'
+            text description: 'Enviar los stages separados por ";"... Vacío si necesita todos los stages', name: 'stages'
       }
       stages {
           stage("Pipeline"){

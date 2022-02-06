@@ -1,7 +1,6 @@
 import utilities.*
 
 def call(stages){
-​
     def listStagesOrder = [
             'build': 'stageCleanBuildTest',
             'sonar': 'stageSonar',
@@ -12,21 +11,22 @@ def call(stages){
             'curl_jar': 'stageCurlJar'
         ]
 
-        def arrayUtils = new array.arrayExtentions();
-        def stagesArray = []
-            stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
+    def arrayUtils = new array.arrayExtentions();
+    def stagesArray = []
+    stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
 
-        if (stagesArray.isEmpty()) {
-            echo 'El pipeline se ejecutará completo'
-            allStages()
-        } else {
-            echo 'Stages a ejecutar :' + stages
-            stagesArray.each{ stageFunction ->//variable as param
-                echo 'Ejecutando ' + stageFunction
-                "${stageFunction}"()
+    if (stagesArray.isEmpty()) {
+        echo 'El pipeline se ejecutará completo'
+        allStages()
+    } 
+    else 
+        {
+        echo 'Stages a ejecutar :' + stages
+        stagesArray.each{ stageFunction ->//variable as param
+        echo 'Ejecutando ' + stageFunction
+        "${stageFunction}"()
             }
-        }
-​
+        }     
 }
 
 def allStages(){
@@ -38,7 +38,7 @@ def allStages(){
     //stageRunJar()
     //stageCurlJar()
 }
-​
+
 def stageCleanBuildTest(){
     env.DESCRTIPTION_STAGE = 'Paso 1: Build - Test'
     stage("${env.DESCRTIPTION_STAGE}"){
@@ -47,7 +47,7 @@ def stageCleanBuildTest(){
         sh "gradle clean build"
     }
 }
-​
+
 def stageSonar(){
     env.DESCRTIPTION_STAGE = "Paso 2: Sonar - Análisis Estático"
     stage("${env.DESCRTIPTION_STAGE}"){
@@ -58,7 +58,7 @@ def stageSonar(){
         }
     }
 }
-​
+
 def stageRunSpringCurl(){
     env.DESCRTIPTION_STAGE = "Paso 3: Curl Springboot Gralde sleep 20"
     stage("${env.DESCRTIPTION_STAGE}"){
@@ -68,8 +68,7 @@ def stageRunSpringCurl(){
         sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
-​
-​
+
 def stageUploadNexus(){
     env.DESCRTIPTION_STAGE = "Paso 4: Subir Nexus"
     stage("${env.DESCRTIPTION_STAGE}"){
@@ -95,7 +94,7 @@ def stageUploadNexus(){
         sh "echo  ${env.STAGE}"
     }
 }
-​
+
 def stageDownloadNexus(){
     env.DESCRTIPTION_STAGE = "Paso 5: Descargar Nexus"
    stage("${env.DESCRTIPTION_STAGE}"){
@@ -104,7 +103,7 @@ def stageDownloadNexus(){
         sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
     }
 }
-​
+
 def stageRunJar(){
     env.DESCRTIPTION_STAGE = "Paso 6: Levantar Artefacto Jar"
     stage("${env.DESCRTIPTION_STAGE}"){
@@ -113,7 +112,7 @@ def stageRunJar(){
         sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
     }
 }
-​
+
 def stageCurlJar(){
     env.DESCRTIPTION_STAGE = "Paso 7: Testear Artefacto - Dormir Esperar 20sg "
     stage("${env.DESCRTIPTION_STAGE}"){
